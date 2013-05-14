@@ -9,7 +9,7 @@
     "laissez-faire": "",
     "micro-promise": "",
     "b": "http://github.com/vesln/b/tarball/8c21b9c961254115b64a1d766793dc7bbcf587e1",
-    "promise": "~2.0.0",
-    "rsvp": "~1.2.0"
+    "promise": "3.x",
+    "rsvp": "1.x"
   }
 }
