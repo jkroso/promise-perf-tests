@@ -106,137 +106,116 @@ These tests were run on a MacBook Pro Intel Core i7, 2.3Ghz, 8g RAM, 256g SSD, u
 Each test is sorted from best to worst time. Times are in milliseconds, and Diff is the percentage difference from the best time.
 
 ```
-Create a fulfilled promise (10,000 iterations)
-Some libraries provide an optimised way of doing this
+   fulfill x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          1 │       22,154 │        - │
+  │ micro-promise │          1 │       23,523 │        6 │
+  │ then.promise  │          1 │       29,292 │       32 │
+  │ deferred      │          2 │       34,915 │       58 │
+  │ rsvp          │          2 │       45,015 │      103 │
+  │ when          │          3 │       52,621 │      138 │
+  │ q             │          6 │      112,225 │      407 │
+  │ avow          │         21 │      419,085 │    1,792 │
+  └───────────────┴────────────┴──────────────┴──────────┘
 
-This test DOES NOT care about when all the promises
-have actually resolved (e.g. Q promises always resolve in a
-future turn).  This is a pure, brute force sync code test.
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │            2 │          191 │            - │
-│ when           │            8 │          806 │          322 │
-│ promises-a     │           10 │         1030 │          440 │
-│ deferred       │           19 │         1888 │          888 │
-│ avow           │           27 │         2681 │         1304 │
-│ micro-promise  │           89 │         8876 │         4547 │
-│ rsvp           │          151 │        15123 │         7818 │
-│ q              │          211 │        21070 │        10932 │
-│ jquery         │          298 │        29770 │        15486 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-Create a pending promise (10,000 iterations)
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │            2 │          161 │            - │
-│ avow           │            6 │          625 │          287 │
-│ promises-a     │            7 │          669 │          314 │
-│ when           │            7 │          702 │          335 │
-│ deferred       │           39 │         3888 │         2310 │
-│ rsvp           │           58 │         5819 │         3507 │
-│ micro-promise  │           76 │         7624 │         4626 │
-│ jquery         │          280 │        27956 │        17228 │
-│ q              │         2941 │       294101 │       182198 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-Create a rejected promise (10,000 iterations)
-Some libraries provide an optimised way of doing this
+  fulfilled x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          0 │        3,238 │        - │
+  │ q             │          0 │        8,942 │      176 │
+  │ deferred      │          1 │       10,012 │      209 │
+  │ then.promise  │          1 │       11,181 │      245 │
+  │ when          │          1 │       15,343 │      374 │
+  │ rsvp          │          1 │       18,343 │      467 │
+  │ avow          │          1 │       28,720 │      787 │
+  │ micro-promise │          2 │       32,549 │      905 │
+  └───────────────┴────────────┴──────────────┴──────────┘
 
-This test DOES NOT care about when all the promises
-have actually resolved (e.g. Q promises always resolve in a
-future turn).  This is a pure, brute force sync code test.
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │            2 │          188 │            - │
-│ when           │            8 │          755 │          301 │
-│ promises-a     │            8 │          759 │          304 │
-│ deferred       │            8 │          775 │          312 │
-│ avow           │           28 │         2763 │         1370 │
-│ micro-promise  │           78 │         7767 │         4031 │
-│ rsvp           │          154 │        15443 │         8115 │
-│ q              │          277 │        27691 │        14630 │
-│ jquery         │          300 │        29981 │        15847 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-Sequence from a pending promise
-Performance of large sequence of then calls from a pending promise
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │            7 │      7069088 │            - │
-│ avow           │           10 │     10254571 │           45 │
-│ promises-a     │           10 │     10323056 │           46 │
-│ when           │           12 │     11818193 │           67 │
-│ deferred       │           57 │     56552970 │          700 │
-│ rsvp           │          132 │    132232586 │         1771 │
-│ micro-promise  │          220 │    220274261 │         3016 │
-│ jquery         │          834 │    833552425 │        11692 │
-│ q              │         3593 │   3592781591 │        50724 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-Sequence from a resolved promise
-Performance of large sequence of then calls from a resolved promise
+  pending-sequence x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          4 │       71,567 │        - │
+  │ when          │          5 │       96,487 │       35 │
+  │ then.promise  │         11 │      211,406 │      195 │
+  │ rsvp          │         18 │      368,980 │      416 │
+  │ deferred      │         19 │      382,560 │      435 │
+  │ avow          │         23 │      463,866 │      548 │
+  │ micro-promise │         42 │      839,174 │    1,073 │
+  │ q             │      1,046 │   20,929,492 │   29,144 │
+  └───────────────┴────────────┴──────────────┴──────────┘
 
-If a library supports a lighter weight notion of a promise, that
-will be used instead of a full deferred (which is typically more
-expensive)
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │           47 │      4679037 │            - │
-│ when           │           51 │      5100774 │            9 │
-│ deferred       │          143 │     14309393 │          206 │
-│ avow           │          215 │     21469056 │          359 │
-│ micro-promise  │          707 │     70740512 │         1412 │
-│ rsvp           │         1314 │    131416526 │         2709 │
-│ promises-a     │         1872 │    187223170 │         3901 │
-│ jquery         │         2445 │    244466789 │         5125 │
-│ q              │        17926 │   1792614754 │        38212 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-State transition -> fulfill (10,000 iterations)
-Transition a pending promise to a fulfilled state
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │           65 │         6508 │            - │
-│ micro-promise  │           72 │         7185 │           10 │
-│ avow           │           80 │         8031 │           23 │
-│ when           │           81 │         8121 │           25 │
-│ rsvp           │          163 │        16272 │          150 │
-│ jquery         │          230 │        23003 │          253 │
-│ deferred       │          242 │        24167 │          271 │
-│ q              │         1299 │       129926 │         1897 │
-│ promises-a     │        11132 │      1113250 │        17007 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-State transition -> fulfill sequence (10 iterations)
-Transition a large sequence of pending promises to a fulfilled state.
-Data will be propagated down the sequence
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ laissez-faire  │            6 │       614888 │            - │
-│ micro-promise  │           11 │      1122175 │           83 │
-│ when           │           15 │      1468349 │          139 │
-│ avow           │           18 │      1815818 │          195 │
-│ rsvp           │           52 │      5225995 │          750 │
-│ jquery         │           60 │      6016816 │          879 │
-│ deferred       │           68 │      6823214 │         1010 │
-│ promises-a     │          278 │     27830037 │         4426 │
-│ q              │          300 │     29990541 │         4777 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
-State transition -> reject (10,000 iterations)
-Transition a pending promise to rejected state
-┌────────────────┬──────────────┬──────────────┬──────────────┐
-│                │   total (ms) │ average (ns) │     diff (%) │
-├────────────────┼──────────────┼──────────────┼──────────────┤
-│ micro-promise  │           68 │         6767 │            - │
-│ laissez-faire  │           75 │         7545 │           11 │
-│ when           │           91 │         9072 │           34 │
-│ avow           │          103 │        10324 │           53 │
-│ rsvp           │          144 │        14393 │          113 │
-│ deferred       │          192 │        19226 │          184 │
-│ jquery         │          218 │        21776 │          222 │
-│ q              │         2839 │       283937 │         4096 │
-│ promises-a     │        11091 │      1109114 │        16291 │
-└────────────────┴──────────────┴──────────────┴──────────────┘
+  pending x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          0 │        2,009 │        - │
+  │ then.promise  │          0 │        6,157 │      207 │
+  │ when          │          0 │        8,465 │      321 │
+  │ avow          │          0 │        8,536 │      325 │
+  │ rsvp          │          1 │       12,898 │      542 │
+  │ deferred      │          1 │       20,508 │      921 │
+  │ micro-promise │          1 │       28,069 │    1,297 │
+  │ q             │         22 │      445,010 │   22,053 │
+  └───────────────┴────────────┴──────────────┴──────────┘
+
+  reject x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          1 │       22,888 │        - │
+  │ micro-promise │          1 │       24,174 │        6 │
+  │ deferred      │          2 │       30,424 │       33 │
+  │ then.promise  │          2 │       31,622 │       38 │
+  │ rsvp          │          2 │       47,550 │      108 │
+  │ when          │          3 │       55,588 │      143 │
+  │ q             │          7 │      144,399 │      531 │
+  │ avow          │         15 │      301,711 │    1,218 │
+  └───────────────┴────────────┴──────────────┴──────────┘
+
+  rejected x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          0 │        2,821 │        - │
+  │ deferred      │          0 │        5,076 │       80 │
+  │ q             │          0 │        6,745 │      139 │
+  │ then.promise  │          1 │       10,869 │      285 │
+  │ rsvp          │          1 │       18,310 │      549 │
+  │ when          │          1 │       23,738 │      741 │
+  │ avow          │          1 │       25,491 │      804 │
+  │ micro-promise │          2 │       31,453 │    1,015 │
+  └───────────────┴────────────┴──────────────┴──────────┘
+
+  resolve-sequence x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          6 │      116,708 │        - │
+  │ micro-promise │          9 │      170,376 │       46 │
+  │ then.promise  │          9 │      172,152 │       48 │
+  │ when          │         13 │      255,559 │      119 │
+  │ rsvp          │         31 │      626,100 │      436 │
+  │ deferred      │         34 │      680,855 │      483 │
+  │ avow          │         59 │    1,185,774 │      916 │
+  │ q             │        141 │    2,824,616 │    2,320 │
+  └───────────────┴────────────┴──────────────┴──────────┘
+
+  resolved-sequence x50
+  ┌───────────────┬────────────┬──────────────┬──────────┐
+  │               │ total (ms) │ average (ns) │ diff (%) │
+  ├───────────────┼────────────┼──────────────┼──────────┤
+  │ laissez-faire │          6 │      126,023 │        - │
+  │ deferred      │         10 │      199,373 │       58 │
+  │ when          │         12 │      241,293 │       91 │
+  │ then.promise  │         18 │      350,516 │      178 │
+  │ rsvp          │         49 │      983,637 │      681 │
+  │ avow          │         63 │    1,254,229 │      895 │
+  │ micro-promise │         67 │    1,336,711 │      961 │
+  │ q             │      1,313 │   26,260,639 │   20,738 │
+  └───────────────┴────────────┴──────────────┴──────────┘
 ```
 
